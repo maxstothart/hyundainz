@@ -3,6 +3,7 @@ import os
 import sys
 import csv
 import time
+from time import sleep
 from pdf2image import convert_from_path, convert_from_bytes
 import pytesseract
 from PIL import Image
@@ -14,7 +15,7 @@ fin = sys.argv[1] #set argument as variable
 wb = load_workbook('Support\\Original.xlsx')#load excel document
 coversheet = wb['Cover Sheet']#select sheet 1 from excel document
 quote = wb['Quote']# select sheet 2 from excel document
-#os.system("python3 dll/pdf2csv.py "+ fin)# run pdf to table (not important yet)
+os.system("python3 dll/pdf2csv.py "+ fin)# run pdf to table (not important yet)
 file = open("TEMP/output.csv")#open csv file
 csvreader = csv.reader(file)#read csv file
 rows = []
@@ -80,31 +81,47 @@ data= pd.read_csv("TEMP/output.csv")
 # Select rows from list using df.loc[df.index[index_list]]
 # splitting dataframe by row index
 enddata  = data.iloc[12:-6:]
+rownumbers=len(enddata.index)
+rownumbers1=(((rownumbers+1)-3)/2)
+print(rownumbers)
 #print(enddata)
 enddata.to_excel('TEMP/table.xlsx', index=False)#save table from csv file to table.xlsx
 table = load_workbook("TEMP\\table.xlsx", data_only=True)#load table.xlsx
 tables = table["Sheet1"]
-
+i5=0
 #combine cells and set as variable
-v1=(4+2)
-v2=(v1+1)
-celladd("a"+str(v1), "a"+str(v2)); out1=(out[1:]); print(out1); partnumber=out1
-celladd("b"+str(v1), "b"+str(v2)); print(out); description=out
-celladd("c"+str(v1), "c"+str(v2)); print(out); dealer=out
-celladd("d"+str(v1), "d"+str(v2)); print(out); hmnz=out
-celladd("e"+str(v1), "e"+str(v2)); print(out); oz=out
-celladd("f"+str(v1), "f"+str(v2)); print(out); note=out
-celladd("g"+str(v1), "g"+str(v2)); print(out); quantity=out
-celladd("h"+str(v1), "h"+str(v2)); print(out); buyprice=out
-celladd("i"+str(v1), "i"+str(v2)); print(out); sellprice=out
+v1=(4)
+v3=9
+while i5 <= rownumbers1:
+        i5=i5+1
+        v2=(v1+1)
+        celladd("a"+str(v1), "a"+str(v2)); out1=(out[1:]); print(out1); partnumber=out1
+        celladd("b"+str(v1), "b"+str(v2)); print(out); description=out
+        celladd("c"+str(v1), "c"+str(v2)); print(out); dealer=out
+        celladd("d"+str(v1), "d"+str(v2)); print(out); hmnz=out
+        celladd("e"+str(v1), "e"+str(v2)); print(out); oz=out
+        celladd("f"+str(v1), "f"+str(v2)); print(out); note=out
+        celladd("g"+str(v1), "g"+str(v2)); print(out); quantity=out
+        celladd("h"+str(v1), "h"+str(v2)); print(out); buyprice=out
+        celladd("i"+str(v1), "i"+str(v2)); print(out); sellprice=out
+        if not note:
+                soh = hmnz
+        else :
+                soh = note
 
-#insert row info into table
-v3=10
-quote['a'+str(v3)] = description
-quote['c'+str(v3)] = partnumber
-quote['d'+str(v3)] = quantity
-quote['f'+str(v3)] = sellprice
-quote['h'+str(v3)] = buyprice
+        #insert row info into table
+        quote['a'+str(v3)] = description
+        quote['c'+str(v3)] = partnumber
+        quote['d'+str(v3)] = quantity
+        quote['f'+str(v3)] = sellprice
+        quote['h'+str(v3)] = buyprice
+        quote['i'+str(v3)] = soh
+        v1=v1+2
+        v3=v3+1
+        print("running again")
+        print(v1)
+        print(v3)
+        sleep(0.5)
 
 
 
