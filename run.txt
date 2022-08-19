@@ -1,0 +1,1 @@
+python3 dll\pdf2txt.py
